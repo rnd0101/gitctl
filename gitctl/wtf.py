@@ -64,7 +64,7 @@ def branch_structure(repository):
                     name=name,
                     remote=remote,
                     remote_branch='%s/%s' % (remote, branch),
-                    remote_url=remote_urls[remote])
+                    remote_url=remote_urls.get(remote, "UNKNOWN"))
 
     # Add the remote branch information
     for name, branch in branches.iteritems():
