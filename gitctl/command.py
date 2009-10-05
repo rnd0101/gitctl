@@ -262,6 +262,7 @@ def gitctl_status(args):
         if args.limit > 0:
             commit_limit = args.limit
 
+    main_branches = (config['development-branch'], config['staging-branch'], config['production-branch'])
     for proj in gitctl.utils.selected_projects(args, projects):
         repository = git.Repo(gitctl.utils.project_path(proj))
         if not args.no_fetch:
@@ -270,9 +271,12 @@ def gitctl_status(args):
 
         output = []
         branches = gitctl.wtf.branch_structure(repository)
-        for branch_name in config['development-branch'], config['staging-branch'], config['production-branch']:
+        if not args.all_branches:
+            branches = dict((k, v) for (k, v) in branches.items() if k in main_branches)
+        for branch_name in main_branches:
             if branch_name in branches:
-                output.extend(gitctl.wtf.show_branch(repository, branches[branch_name], branches, verbose=args.verbose, commit_limit=commit_limit))
+                output.extend(gitctl.wtf.show_branch(repository, branches[branch_name], branches,
+                                                     verbose=args.verbose, commit_limit=commit_limit))
 
         if repository.is_dirty:
             output.append('[!] Working directory has uncommitted changes')

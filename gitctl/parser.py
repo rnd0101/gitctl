@@ -93,6 +93,8 @@ parser_status = cmd_parsers.add_parser('status',
 parser_status.add_argument('--no-fetch', action='store_true',
     help='Check the status without fetching from upstream first. This is '
          'faster, but may be unreliable if the remote branches are out-of-sync.')
+parser_status.add_argument('--all-branches', action='store_true',
+    help='Show all branches status, not only the development, staging and production.')
 parser_status.add_argument('project', nargs='*',
     help='Name of a project to check. If omitted all projects in the '
          'externals configuration will be checked.')
